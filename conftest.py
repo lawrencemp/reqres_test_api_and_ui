@@ -13,7 +13,3 @@ def browser():
 @pytest.fixture(scope="function")
 def api_calling():
     return ApiClient
-
-
-
-
