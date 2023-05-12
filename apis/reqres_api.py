@@ -72,3 +72,8 @@ class ApiClient:
     def delete_reqres(host, path):
         url = host + path
         return delete(url)
+
+    @staticmethod
+    def is_response_code_correct(response, expected_status_code: int):
+        actual_status_code = response.status_code
+        assert actual_status_code == expected_status_code, f"Статус код равен {response.status_code}"
