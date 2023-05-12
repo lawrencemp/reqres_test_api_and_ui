@@ -1,5 +1,4 @@
 import pytest
-from selenium.webdriver.common.by import By
 from utils.locators_for_parametrize import get_all_li_elements
 from pages.main_page import MainPage
 
@@ -16,4 +15,4 @@ class TestUi:
         page.get_element(*request_locator).click()
         method = page.find_method(request_locator)
         page.is_all_endpoint_elements_are_visible(method, request_locator)
-        page.is_api_response_equal(method)
+        page.is_api_and_ui_responses_equal(method)

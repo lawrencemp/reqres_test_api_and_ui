@@ -43,14 +43,22 @@ class MainPage(BasePage):
             else:
                 return ApiClient.put_reqres(self.url, path, body)
 
-    def is_api_response_equal(self, method):
+    def is_api_and_ui_responses_equal(self, method):
         api_response = self.get_api_response(method)
-        ui_status_code = self.get_element(*MainPageLocators.RESPONSE_CODE).text
-        assert str(api_response.status_code) == ui_status_code, "Коды ответа не совпадают"
+        self.is_response_code_equal(str(api_response.status_code))
         if method != 'delete':
-            ui_response_body = loads(self.get_element(*MainPageLocators.OUTPUT_RESPONSE).text)
-            api_response_dict = api_response.json()
-            if method == 'get':
-                assert api_response_dict == ui_response_body, "Тела ответа не совпадают"
-            else:
-                assert api_response_dict.keys() == ui_response_body.keys(), "Поля ответов не совпадают"
+            self.is_response_body_equal(method, api_response.json())
+
+    def is_response_code_equal(self, api_response_code: str):
+        ui_response_code = self.get_element(*MainPageLocators.RESPONSE_CODE).text
+        assert api_response_code == ui_response_code, "Коды ответа не совпадают"
+
+    def is_response_body_equal(self, method: str, api_response_body):
+        ui_response_body = loads(self.get_element(*MainPageLocators.OUTPUT_RESPONSE).text)
+        if method == 'get':
+            assert api_response_body == ui_response_body, "Тела ответа не совпадают"
+        else:
+            assert api_response_body.keys() == ui_response_body.keys(), "Поля ответов не совпадают"
+
+
+
